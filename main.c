@@ -20,7 +20,7 @@ int max(int a, int b) {
     return b;
 }
 
-int pixel_igual(Pixel p1, Pixel p2) {
+int pixels_are_equal(Pixel p1, Pixel p2) {
     if (p1.r == p2.r &&
         p1.g == p2.g &&
         p1.b == p2.b)
@@ -29,7 +29,7 @@ int pixel_igual(Pixel p1, Pixel p2) {
 }
 
 
-Image escala_de_cinza(Image img) {
+Image apply_greyscale_filter(Image img) {
     /*for (unsigned int i = 0; i < img.h; ++i) {
         for (unsigned int j = 0; j < img.w; ++j) {
             print("%u", img.pixel[i][j][0] + img.pixel[i][j][1] + img.pixel[i][j][2]);
@@ -51,7 +51,7 @@ Image escala_de_cinza(Image img) {
     return img;
 }
 
-Image filtro_sepia(Image img) {
+Image apply_sepia_filter(Image img) {
     for (unsigned int x = 0; x < img.h; ++x) {
         for (unsigned int j = 0; j < img.w; ++j) {
             unsigned short int pixel[3];
@@ -76,7 +76,7 @@ Image filtro_sepia(Image img) {
     return img;
 }
 
-void blur(unsigned int h, Pixel pixel_grid[512][512], int T, unsigned int w) {
+void apply_blur_filter(unsigned int h, Pixel pixel_grid[512][512], int T, unsigned int w) {
     for (unsigned int i = 0; i < h; ++i) {
         for (unsigned int j = 0; j < w; ++j) {
             Pixel media = {0, 0, 0};
@@ -103,7 +103,7 @@ void blur(unsigned int h, Pixel pixel_grid[512][512], int T, unsigned int w) {
     }
 }
 
-Image rotacionar90direita(Image img) {
+Image rotate_90_degrees_right(Image img) {
     Image rotacionada;
 
     rotacionada.w = img.h;
@@ -120,7 +120,7 @@ Image rotacionar90direita(Image img) {
     return rotacionada;
 }
 
-void inverter_cores(Pixel pixel_grid[512][512],
+void invert_colours(Pixel pixel_grid[512][512],
                     unsigned int w, unsigned int h) {
     for (unsigned int i = 0; i < h; ++i) {
         for (unsigned int j = 0; j < w; ++j) {
@@ -131,7 +131,7 @@ void inverter_cores(Pixel pixel_grid[512][512],
     }
 }
 
-Image cortar_imagem(Image img, int x, int y, int w, int h) {
+Image cut_image(Image img, int x, int y, int w, int h) {
     Image cortada;
 
     cortada.w = w;
@@ -207,17 +207,17 @@ int main() {
 
         switch(opcao) {
             case 1: { // Escala de Cinza
-                img = escala_de_cinza(img);
+                img = apply_greyscale_filter(img);
                 break;
             }
             case 2: { // Filtro Sepia
-                img = filtro_sepia(img);
+                img = apply_sepia_filter(img);
                 break;
             }
-            case 3: { // Blur
+            case 3: { // apply_blur_filter
                 int tamanho = 0;
                 scanf("%d", &tamanho);
-                blur(img.h, img.pixel_grid, tamanho, img.w);
+                apply_blur_filter(img.h, img.pixel_grid, tamanho, img.w);
                 break;
             }
             case 4: { // Rotacao
@@ -225,7 +225,7 @@ int main() {
                 scanf("%d", &quantas_vezes);
                 quantas_vezes %= 4;
                 for (int j = 0; j < quantas_vezes; ++j) {
-                    img = rotacionar90direita(img);
+                    img = rotate_90_degrees_right(img);
                 }
                 break;
             }
@@ -262,7 +262,7 @@ int main() {
                 break;
             }
             case 6: { // Inversao de Cores
-                inverter_cores(img.pixel_grid, img.w, img.h);
+                invert_colours(img.pixel_grid, img.w, img.h);
                 break;
             }
             case 7: { // Cortar Imagem
@@ -271,7 +271,7 @@ int main() {
                 int w, h;
                 scanf("%d %d", &w, &h);
 
-                img = cortar_imagem(img, x, y, w, h);
+                img = cut_image(img, x, y, w, h);
                 break;
             }
         }

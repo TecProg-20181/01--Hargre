@@ -12,6 +12,16 @@ typedef struct _image {
     unsigned int height;
 } Image;
 
+typedef enum {
+    Greyscale=1, 
+    Sepia, 
+    Blur, 
+    Rotation, 
+    Mirror, 
+    ColourInversion, 
+    Cut
+} FilterOptions;
+
 Image apply_greyscale_filter(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
@@ -240,25 +250,25 @@ int main() {
     scanf("%d", &n_opcoes);
 
     for(int i = 0; i < n_opcoes; ++i) {
-        int opcao;
-        scanf("%d", &opcao);
+        FilterOptions option;
+        scanf("%d", &option);
 
-        switch(opcao) {
-            case 1: { // Escala de Cinza
+        switch(option) {
+            case Greyscale: {
                 img = apply_greyscale_filter(img);
                 break;
             }
-            case 2: { // Filtro Sepia
+            case Sepia: {
                 img = apply_sepia_filter(img);
                 break;
             }
-            case 3: { // apply_blur_filter
+            case Blur: {
                 int tamanho = 0;
                 scanf("%d", &tamanho);
                 apply_blur_filter(img.height, img.pixel_grid, tamanho, img.width);
                 break;
             }
-            case 4: { // Rotacao
+            case Rotation: {
                 int quantas_vezes = 0;
                 scanf("%d", &quantas_vezes);
                 quantas_vezes %= 4;
@@ -267,15 +277,15 @@ int main() {
                 }
                 break;
             }
-            case 5: { // Espelhamento
+            case Mirror: {
                 img = mirror_image(img);
                 break;
             }
-            case 6: { // Inversao de Cores
+            case ColourInversion: {
                 img = invert_colours(img);
                 break;
             }
-            case 7: { // Cortar Imagem
+            case Cut: {
                 int x, y;
                 scanf("%d %d", &x, &y);
                 int width, height;

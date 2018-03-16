@@ -112,6 +112,40 @@ Image rotate_90_degrees_right(Image img) {
     return rotacionada;
 }
 
+Image mirror_image(Image img) {
+    int horizontal = 0;
+    scanf("%d", &horizontal);
+
+    int width = img.width, height = img.height;
+
+    if (horizontal == 1) width /= 2;
+    else height /= 2;
+
+    for (int i2 = 0; i2 < height; ++i2) {
+        for (int j = 0; j < width; ++j) {
+            int x = i2, y = j;
+
+            if (horizontal == 1) y = img.width - 1 - j;
+            else x = img.height - 1 - i2;
+
+            Pixel aux1;
+            aux1.r = img.pixel_grid[i2][j].r;
+            aux1.g = img.pixel_grid[i2][j].g;
+            aux1.b = img.pixel_grid[i2][j].b;
+
+            img.pixel_grid[i2][j].r = img.pixel_grid[x][y].r;
+            img.pixel_grid[i2][j].g = img.pixel_grid[x][y].g;
+            img.pixel_grid[i2][j].b   = img.pixel_grid[x][y].b;
+
+            img.pixel_grid[x][y].r = aux1.r;
+            img.pixel_grid[x][y].g = aux1.g;
+            img.pixel_grid[x][y].b = aux1.b;
+        }
+    }
+
+    return img;
+}
+
 void invert_colours(Pixel pixel_grid[512][512],
                     unsigned int width, unsigned int height) {
     for (unsigned int i = 0; i < height; ++i) {
@@ -242,35 +276,7 @@ int main() {
                 break;
             }
             case 5: { // Espelhamento
-                int horizontal = 0;
-                scanf("%d", &horizontal);
-
-                int width = img.width, height = img.height;
-
-                if (horizontal == 1) width /= 2;
-                else height /= 2;
-
-                for (int i2 = 0; i2 < height; ++i2) {
-                    for (int j = 0; j < width; ++j) {
-                        int x = i2, y = j;
-
-                        if (horizontal == 1) y = img.width - 1 - j;
-                        else x = img.height - 1 - i2;
-
-                        Pixel aux1;
-                        aux1.r = img.pixel_grid[i2][j].r;
-                        aux1.g = img.pixel_grid[i2][j].g;
-                        aux1.b = img.pixel_grid[i2][j].b;
-
-                        img.pixel_grid[i2][j].r = img.pixel_grid[x][y].r;
-                        img.pixel_grid[i2][j].g = img.pixel_grid[x][y].g;
-                        img.pixel_grid[i2][j].b   = img.pixel_grid[x][y].b;
-
-                        img.pixel_grid[x][y].r = aux1.r;
-                        img.pixel_grid[x][y].g = aux1.g;
-                        img.pixel_grid[x][y].b = aux1.b;
-                    }
-                }
+                img = mirror_image(img);
                 break;
             }
             case 6: { // Inversao de Cores

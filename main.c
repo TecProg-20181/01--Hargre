@@ -130,15 +130,16 @@ Image mirror_image(Image img) {
     return img;
 }
 
-void invert_colours(Pixel pixel_grid[512][512],
-                    unsigned int width, unsigned int height) {
-    for (unsigned int i = 0; i < height; ++i) {
-        for (unsigned int j = 0; j < width; ++j) {
-            pixel_grid[i][j].r = 255 - pixel_grid[i][j].r;
-            pixel_grid[i][j].g = 255 - pixel_grid[i][j].g;
-            pixel_grid[i][j].b = 255 - pixel_grid[i][j].b;
+Image invert_colours(Image img) {
+    for (unsigned int i = 0; i < img.height; ++i) {
+        for (unsigned int j = 0; j < img.width; ++j) {
+            img.pixel_grid[i][j].r = 255 - img.pixel_grid[i][j].r;
+            img.pixel_grid[i][j].g = 255 - img.pixel_grid[i][j].g;
+            img.pixel_grid[i][j].b = 255 - img.pixel_grid[i][j].b;
         }
     }
+
+    return img;
 }
 
 Image cut_image(Image img, int x, int y, int width, int height) {
@@ -264,7 +265,7 @@ int main() {
                 break;
             }
             case 6: { // Inversao de Cores
-                invert_colours(img.pixel_grid, img.width, img.height);
+                img = invert_colours(img);
                 break;
             }
             case 7: { // Cortar Imagem

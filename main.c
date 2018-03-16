@@ -100,30 +100,37 @@ Image mirror_image(Image img) {
     int horizontal = 0;
     scanf("%d", &horizontal);
 
-    int width = img.width, height = img.height;
+    int width = img.width; 
+    int height = img.height;
 
-    if (horizontal == 1) width /= 2;
-    else height /= 2;
+    if (horizontal == 1) {
+        width /= 2;  
+    } else {
+        height /= 2;
+    }
 
-    for (int i2 = 0; i2 < height; ++i2) {
+    for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            int x = i2, y = j;
+            int x = i, y = j;
 
-            if (horizontal == 1) y = img.width - 1 - j;
-            else x = img.height - 1 - i2;
+            if (horizontal == 1) {
+                y = img.width - 1 - j;
+            } else {
+                x = img.height - 1 - i;
+            }
 
-            Pixel aux1;
-            aux1.r = img.pixel_grid[i2][j].r;
-            aux1.g = img.pixel_grid[i2][j].g;
-            aux1.b = img.pixel_grid[i2][j].b;
+            Pixel aux_pixel;
+            aux_pixel.r = img.pixel_grid[i][j].r;
+            aux_pixel.g = img.pixel_grid[i][j].g;
+            aux_pixel.b = img.pixel_grid[i][j].b;
 
-            img.pixel_grid[i2][j].r = img.pixel_grid[x][y].r;
-            img.pixel_grid[i2][j].g = img.pixel_grid[x][y].g;
-            img.pixel_grid[i2][j].b   = img.pixel_grid[x][y].b;
+            img.pixel_grid[i][j].r = img.pixel_grid[x][y].r;
+            img.pixel_grid[i][j].g = img.pixel_grid[x][y].g;
+            img.pixel_grid[i][j].b = img.pixel_grid[x][y].b;
 
-            img.pixel_grid[x][y].r = aux1.r;
-            img.pixel_grid[x][y].g = aux1.g;
-            img.pixel_grid[x][y].b = aux1.b;
+            img.pixel_grid[x][y].r = aux_pixel.r;
+            img.pixel_grid[x][y].g = aux_pixel.g;
+            img.pixel_grid[x][y].b = aux_pixel.b;
         }
     }
 

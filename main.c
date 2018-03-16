@@ -7,7 +7,6 @@ typedef struct _pixel {
 } Pixel;
 
 typedef struct _image {
-    // [width][height][rgb]
     Pixel pixel_grid[512][512];
     unsigned int width;
     unsigned int height;
@@ -30,12 +29,6 @@ int pixels_are_equal(Pixel p1, Pixel p2) {
 
 
 Image apply_greyscale_filter(Image img) {
-    /*for (unsigned int i = 0; i < img.height; ++i) {
-        for (unsigned int j = 0; j < img.width; ++j) {
-            print("%u", img.pixel[i][j][0] + img.pixel[i][j][1] + img.pixel[i][j][2]);
-        }
-    }*/
-
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
             int media = img.pixel_grid[i][j].r +
@@ -91,7 +84,6 @@ void apply_blur_filter(unsigned int height, Pixel pixel_grid[512][512], int T, u
                 }
             }
 
-            // printf("%u", media.r)
             media.r /= T * T;
             media.g /= T * T;
             media.b /= T * T;

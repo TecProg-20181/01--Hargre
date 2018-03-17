@@ -63,18 +63,36 @@ Image apply_sepia_filter(Image img) {
     return img;
 }
 
-void apply_blur_filter(unsigned int height, Pixel pixel_grid[512][512], int size, unsigned int width) {
-    for (unsigned int i = 0; i < height; ++i) {
-        for (unsigned int j = 0; j < width; ++j) {
+int get_min(int first_number, int second_number) {
+    if (first_number < second_number) {
+        return first_number;
+    }
+    return second_number;
+}
+
+int get_max(int first_number, int second_number) {
+    if (first_number > second_number) {
+        return first_number;
+    }
+    return second_number;
+}
+
+Image apply_blur_filter(Image img) {
+    int size = 0;
+    scanf("%d", &size);
+
+    for (unsigned int i = 0; i < img.height; ++i) {
+        for (unsigned int j = 0; j < img.width; ++j) {
             Pixel average = {0, 0, 0};
 
-            int min_height = (height - 1 > i + size/2) ? i + size/2 : height - 1;
-            int min_width = (width - 1 > j + size/2) ? j + size/2 : width - 1;
-            for(int x = (0 > i - size/2 ? 0 : i - size/2); x <= min_height; ++x) {
-                for(int y = (0 > j - size/2 ? 0 : j - size/2); y <= min_width; ++y) {
-                    average.r += pixel_grid[x][y].r;
-                    average.g += pixel_grid[x][y].g;
-                    average.b += pixel_grid[x][y].b;
+            int min_height = get_min(img.height - 1, i + size/2);
+            int min_width = get_min(img.width - 1, j + size/2);
+            
+            for (int x = get_max(0, i - size/2); x <= min_height; ++x) {
+                for (int y = get_max(0, j - size/2); y <= min_width; ++y) {
+                    average.r += img.pixel_grid[x][y].r;
+                    average.g += img.pixel_grid[x][y].g;
+                    average.b += img.pixel_grid[x][y].b;
                 }
             }
 
@@ -82,11 +100,13 @@ void apply_blur_filter(unsigned int height, Pixel pixel_grid[512][512], int size
             average.g /= size * size;
             average.b /= size * size;
 
-            pixel_grid[i][j].r = average.r;
-            pixel_grid[i][j].g = average.g;
-            pixel_grid[i][j].b = average.b;
+            img.pixel_grid[i][j].r = average.r;
+            img.pixel_grid[i][j].g = average.g;
+            img.pixel_grid[i][j].b = average.b;
         }
     }
+
+    return img;
 }
 
 Image rotate_90_degrees_right(Image img) {
@@ -268,9 +288,7 @@ int main() {
                 break;
             }
             case Blur: {
-                int tamanho = 0;
-                scanf("%d", &tamanho);
-                apply_blur_filter(img.height, img.pixel_grid, tamanho, img.width);
+                img = apply_blur_filter(img);
                 break;
             }
             case Rotation: {

@@ -210,6 +210,17 @@ Image read_image_pixels(Image img) {
                                  &img.pixel_grid[i][j].b);
         }
     }
+    return img;
+}
+
+Image read_image() {
+    Image img;
+
+    read_image_type();
+    img.width = read_image_width();
+    img.height = read_image_height();
+    read_max_color();
+    img = read_image_pixels(img);
 
     return img;
 }
@@ -234,22 +245,16 @@ void print_image_pixels(Image img) {
     }
 }
 
+
 int main() {
     Image img;
 
-    read_image_type();
+    img = read_image();
 
-    int max_color;
-    img.width = read_image_width();
-    img.height = read_image_height();
-    max_color = read_max_color();
+    int number_of_options;
+    scanf("%d", &number_of_options);
 
-    img = read_image_pixels(img);
-
-    int n_opcoes;
-    scanf("%d", &n_opcoes);
-
-    for(int i = 0; i < n_opcoes; ++i) {
+    for(int i = 0; i < number_of_options; ++i) {
         FilterOptions option;
         scanf("%d", &option);
 

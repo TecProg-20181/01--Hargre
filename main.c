@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 typedef struct _pixel {
-    unsigned short int r;
-    unsigned short int g;
-    unsigned short int b;
+    unsigned short int red;
+    unsigned short int green;
+    unsigned short int blue;
 } Pixel;
 
 typedef struct _image {
@@ -39,13 +39,13 @@ int get_max(int first_number, int second_number) {
 Image apply_greyscale_filter(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
-            int average = img.pixel_grid[i][j].r +
-                        img.pixel_grid[i][j].g +
-                        img.pixel_grid[i][j].b;
+            int average = img.pixel_grid[i][j].red +
+                        img.pixel_grid[i][j].green +
+                        img.pixel_grid[i][j].blue;
             average /= 3;
-            img.pixel_grid[i][j].r = average;
-            img.pixel_grid[i][j].g = average;
-            img.pixel_grid[i][j].b = average;
+            img.pixel_grid[i][j].red = average;
+            img.pixel_grid[i][j].green = average;
+            img.pixel_grid[i][j].blue = average;
         }
     }
 
@@ -56,21 +56,21 @@ Image apply_sepia_filter(Image img) {
     for (unsigned int x = 0; x < img.height; ++x) {
         for (unsigned int j = 0; j < img.width; ++j) {
             Pixel pixel;
-            pixel.r = img.pixel_grid[x][j].r;
-            pixel.g = img.pixel_grid[x][j].g;
-            pixel.b = img.pixel_grid[x][j].b;
+            pixel.red = img.pixel_grid[x][j].red;
+            pixel.green = img.pixel_grid[x][j].green;
+            pixel.blue = img.pixel_grid[x][j].blue;
 
-            int red =  pixel.r * .393 + pixel.g * .769 + pixel.b * .189;
+            int red =  pixel.red * .393 + pixel.green * .769 + pixel.blue * .189;
             int min_red = get_min(255, red);
-            img.pixel_grid[x][j].r = min_red;
+            img.pixel_grid[x][j].red = min_red;
 
-            int green =  pixel.r * .349 + pixel.g * .686 + pixel.b * .168;
+            int green =  pixel.red * .349 + pixel.green * .686 + pixel.blue * .168;
             int min_green = get_min(255, green);
-            img.pixel_grid[x][j].g = min_green;
+            img.pixel_grid[x][j].green = min_green;
 
-            int blue =  pixel.r * .272 + pixel.g * .534 + pixel.b * .131;
+            int blue =  pixel.red * .272 + pixel.green * .534 + pixel.blue * .131;
             int min_blue = get_min(255, blue);
-            img.pixel_grid[x][j].b = min_blue;
+            img.pixel_grid[x][j].blue = min_blue;
         }
     }
 
@@ -90,19 +90,19 @@ Image apply_blur_filter(Image img) {
             
             for (int x = get_max(0, i - size/2); x <= min_height; ++x) {
                 for (int y = get_max(0, j - size/2); y <= min_width; ++y) {
-                    average.r += img.pixel_grid[x][y].r;
-                    average.g += img.pixel_grid[x][y].g;
-                    average.b += img.pixel_grid[x][y].b;
+                    average.red += img.pixel_grid[x][y].red;
+                    average.green += img.pixel_grid[x][y].green;
+                    average.blue += img.pixel_grid[x][y].blue;
                 }
             }
 
-            average.r /= size * size;
-            average.g /= size * size;
-            average.b /= size * size;
+            average.red /= size * size;
+            average.green /= size * size;
+            average.blue /= size * size;
 
-            img.pixel_grid[i][j].r = average.r;
-            img.pixel_grid[i][j].g = average.g;
-            img.pixel_grid[i][j].b = average.b;
+            img.pixel_grid[i][j].red = average.red;
+            img.pixel_grid[i][j].green = average.green;
+            img.pixel_grid[i][j].blue = average.blue;
         }
     }
 
@@ -117,9 +117,9 @@ Image rotate_90_degrees_right(Image img) {
 
     for (unsigned int i = 0, y = 0; i < rotated_image.height; ++i, ++y) {
         for (int j = rotated_image.width - 1, x = 0; j >= 0; --j, ++x) {
-            rotated_image.pixel_grid[i][j].r = img.pixel_grid[x][y].r;
-            rotated_image.pixel_grid[i][j].g = img.pixel_grid[x][y].g;
-            rotated_image.pixel_grid[i][j].b = img.pixel_grid[x][y].b;
+            rotated_image.pixel_grid[i][j].red = img.pixel_grid[x][y].red;
+            rotated_image.pixel_grid[i][j].green = img.pixel_grid[x][y].green;
+            rotated_image.pixel_grid[i][j].blue = img.pixel_grid[x][y].blue;
         }
     }
 
@@ -150,17 +150,17 @@ Image mirror_image(Image img) {
             }
 
             Pixel aux_pixel;
-            aux_pixel.r = img.pixel_grid[i][j].r;
-            aux_pixel.g = img.pixel_grid[i][j].g;
-            aux_pixel.b = img.pixel_grid[i][j].b;
+            aux_pixel.red = img.pixel_grid[i][j].red;
+            aux_pixel.green = img.pixel_grid[i][j].green;
+            aux_pixel.blue = img.pixel_grid[i][j].blue;
 
-            img.pixel_grid[i][j].r = img.pixel_grid[x][y].r;
-            img.pixel_grid[i][j].g = img.pixel_grid[x][y].g;
-            img.pixel_grid[i][j].b = img.pixel_grid[x][y].b;
+            img.pixel_grid[i][j].red = img.pixel_grid[x][y].red;
+            img.pixel_grid[i][j].green = img.pixel_grid[x][y].green;
+            img.pixel_grid[i][j].blue = img.pixel_grid[x][y].blue;
 
-            img.pixel_grid[x][y].r = aux_pixel.r;
-            img.pixel_grid[x][y].g = aux_pixel.g;
-            img.pixel_grid[x][y].b = aux_pixel.b;
+            img.pixel_grid[x][y].red = aux_pixel.red;
+            img.pixel_grid[x][y].green = aux_pixel.green;
+            img.pixel_grid[x][y].blue = aux_pixel.blue;
         }
     }
 
@@ -170,9 +170,9 @@ Image mirror_image(Image img) {
 Image invert_colours(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
-            img.pixel_grid[i][j].r = 255 - img.pixel_grid[i][j].r;
-            img.pixel_grid[i][j].g = 255 - img.pixel_grid[i][j].g;
-            img.pixel_grid[i][j].b = 255 - img.pixel_grid[i][j].b;
+            img.pixel_grid[i][j].red = 255 - img.pixel_grid[i][j].red;
+            img.pixel_grid[i][j].green = 255 - img.pixel_grid[i][j].green;
+            img.pixel_grid[i][j].blue = 255 - img.pixel_grid[i][j].blue;
         }
     }
 
@@ -187,9 +187,9 @@ Image cut_image(Image img, int x, int y, int width, int height) {
 
     for(int i = 0; i < height; ++i) {
         for(int j = 0; j < width; ++j) {
-            cut_image.pixel_grid[i][j].r = img.pixel_grid[i + y][j + x].r;
-            cut_image.pixel_grid[i][j].g = img.pixel_grid[i + y][j + x].g;
-            cut_image.pixel_grid[i][j].b = img.pixel_grid[i + y][j + x].b;
+            cut_image.pixel_grid[i][j].red = img.pixel_grid[i + y][j + x].red;
+            cut_image.pixel_grid[i][j].green = img.pixel_grid[i + y][j + x].green;
+            cut_image.pixel_grid[i][j].blue = img.pixel_grid[i + y][j + x].blue;
         }
     }
 
@@ -225,9 +225,9 @@ int read_max_color() {
 Image read_image_pixels(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
-            scanf("%hu %hu %hu", &img.pixel_grid[i][j].r,
-                                 &img.pixel_grid[i][j].g,
-                                 &img.pixel_grid[i][j].b);
+            scanf("%hu %hu %hu", &img.pixel_grid[i][j].red,
+                                 &img.pixel_grid[i][j].green,
+                                 &img.pixel_grid[i][j].blue);
         }
     }
     return img;
@@ -256,9 +256,9 @@ void print_image_dimensions(Image img) {
 void print_image_pixels(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
-            printf("%hu %hu %hu ", img.pixel_grid[i][j].r,
-                                   img.pixel_grid[i][j].g,
-                                   img.pixel_grid[i][j].b);
+            printf("%hu %hu %hu ", img.pixel_grid[i][j].red,
+                                   img.pixel_grid[i][j].green,
+                                   img.pixel_grid[i][j].blue);
 
         }
         printf("\n");

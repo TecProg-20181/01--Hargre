@@ -109,25 +109,37 @@ Image apply_blur_filter(Image image) {
     return image;
 }
 
+int get_amount_of_rotations() {
+    int amount_of_rotations = 0;
+    scanf("%d", &amount_of_rotations);
+    amount_of_rotations %= 4;
+
+    return amount_of_rotations;
+}
+
 Image rotate_90_degrees_right(Image image) {
     Image rotated_image;
+
+    int amount_of_rotations = get_amount_of_rotations();
 
     rotated_image.width = image.height;
     rotated_image.height = image.width;
 
-    int y = 0;
+    for (int rotation = 0; rotation < amount_of_rotations; rotation++) {
+        int y = 0;
 
-    for (unsigned int i = 0; i < rotated_image.height; ++i) {
-        int x = 0;
-        
-        for (int j = rotated_image.width - 1; j >= 0; --j) {
-            rotated_image.pixel_grid[i][j].red = image.pixel_grid[x][y].red;
-            rotated_image.pixel_grid[i][j].green = image.pixel_grid[x][y].green;
-            rotated_image.pixel_grid[i][j].blue = image.pixel_grid[x][y].blue;
+        for (unsigned int i = 0; i < rotated_image.height; ++i) {
+            int x = 0;
 
-            x += 1;
+            for (int j = rotated_image.width - 1; j >= 0; --j) {
+                rotated_image.pixel_grid[i][j].red = image.pixel_grid[x][y].red;
+                rotated_image.pixel_grid[i][j].green = image.pixel_grid[x][y].green;
+                rotated_image.pixel_grid[i][j].blue = image.pixel_grid[x][y].blue;
+
+                x += 1;
+            }
+            y += 1;
         }
-        y += 1;
     }
 
     return rotated_image;
@@ -306,12 +318,7 @@ int main() {
                 break;
             }
             case Rotation: {
-                int amount_of_rotations = 0;
-                scanf("%d", &amount_of_rotations);
-                amount_of_rotations %= 4;
-                for (int j = 0; j < amount_of_rotations; ++j) {
-                    image = rotate_90_degrees_right(image);
-                }
+                image = rotate_90_degrees_right(image);
                 break;
             }
             case Mirror: {
@@ -323,8 +330,6 @@ int main() {
                 break;
             }
             case Cut: {
-
-
                 image = cut_image(image);
                 break;
             }

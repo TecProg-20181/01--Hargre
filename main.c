@@ -22,6 +22,20 @@ typedef enum {
     Cut
 } FilterOptions;
 
+int get_min(int first_number, int second_number) {
+    if (first_number < second_number) {
+        return first_number;
+    }
+    return second_number;
+}
+
+int get_max(int first_number, int second_number) {
+    if (first_number > second_number) {
+        return first_number;
+    }
+    return second_number;
+}
+
 Image apply_greyscale_filter(Image img) {
     for (unsigned int i = 0; i < img.height; ++i) {
         for (unsigned int j = 0; j < img.width; ++j) {
@@ -41,40 +55,26 @@ Image apply_greyscale_filter(Image img) {
 Image apply_sepia_filter(Image img) {
     for (unsigned int x = 0; x < img.height; ++x) {
         for (unsigned int j = 0; j < img.width; ++j) {
-            unsigned short int pixel[3];
-            pixel[0] = img.pixel_grid[x][j].r;
-            pixel[1] = img.pixel_grid[x][j].g;
-            pixel[2] = img.pixel_grid[x][j].b;
+            Pixel pixel;
+            pixel.r = img.pixel_grid[x][j].r;
+            pixel.g = img.pixel_grid[x][j].g;
+            pixel.b = img.pixel_grid[x][j].b;
 
-            int p =  pixel[0] * .393 + pixel[1] * .769 + pixel[2] * .189;
-            int min_red = (255 >  p) ? p : 255;
+            int red =  pixel.r * .393 + pixel.g * .769 + pixel.b * .189;
+            int min_red = get_min(255, red);
             img.pixel_grid[x][j].r = min_red;
 
-            p =  pixel[0] * .349 + pixel[1] * .686 + pixel[2] * .168;
-            min_red = (255 >  p) ? p : 255;
-            img.pixel_grid[x][j].g = min_red;
+            int green =  pixel.r * .349 + pixel.g * .686 + pixel.b * .168;
+            int min_green = get_min(255, green);
+            img.pixel_grid[x][j].g = min_green;
 
-            p =  pixel[0] * .272 + pixel[1] * .534 + pixel[2] * .131;
-            min_red = (255 >  p) ? p : 255;
-            img.pixel_grid[x][j].b = min_red;
+            int blue =  pixel.r * .272 + pixel.g * .534 + pixel.b * .131;
+            int min_blue = get_min(255, blue);
+            img.pixel_grid[x][j].b = min_blue;
         }
     }
 
     return img;
-}
-
-int get_min(int first_number, int second_number) {
-    if (first_number < second_number) {
-        return first_number;
-    }
-    return second_number;
-}
-
-int get_max(int first_number, int second_number) {
-    if (first_number > second_number) {
-        return first_number;
-    }
-    return second_number;
 }
 
 Image apply_blur_filter(Image img) {

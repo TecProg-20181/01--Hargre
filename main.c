@@ -115,12 +115,19 @@ Image rotate_90_degrees_right(Image image) {
     rotated_image.width = image.height;
     rotated_image.height = image.width;
 
-    for (unsigned int i = 0, y = 0; i < rotated_image.height; ++i, ++y) {
-        for (int j = rotated_image.width - 1, x = 0; j >= 0; --j, ++x) {
+    int y = 0;
+
+    for (unsigned int i = 0; i < rotated_image.height; ++i) {
+        int x = 0;
+        
+        for (int j = rotated_image.width - 1; j >= 0; --j) {
             rotated_image.pixel_grid[i][j].red = image.pixel_grid[x][y].red;
             rotated_image.pixel_grid[i][j].green = image.pixel_grid[x][y].green;
             rotated_image.pixel_grid[i][j].blue = image.pixel_grid[x][y].blue;
+
+            x += 1;
         }
+        y += 1;
     }
 
     return rotated_image;

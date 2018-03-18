@@ -179,9 +179,16 @@ Image invert_colours(Image img) {
     return img;
 }
 
-Image cut_image(Image img, int x, int y, int width, int height) {
+Image cut_image(Image img) {
+    int x;
+    int y;
+    int width;
+    int height;
     Image cut_image;
 
+    scanf("%d %d", &x, &y);
+    scanf("%d %d", &width, &height);
+    
     cut_image.width = width;
     cut_image.height = height;
 
@@ -309,12 +316,9 @@ int main() {
                 break;
             }
             case Cut: {
-                int x, y;
-                scanf("%d %d", &x, &y);
-                int width, height;
-                scanf("%d %d", &width, &height);
 
-                img = cut_image(img, x, y, width, height);
+
+                img = cut_image(img);
                 break;
             }
         }
